@@ -1,3 +1,5 @@
+const { describe, it, expect, run } = require('../unit');
+
 function testSuite() {
 	describe('expect::to', function() {
 		it('should be possible to validate expectations by callback', function() {
@@ -212,3 +214,5 @@ function testSuite() {
 		});
 	});
 }
+
+run({testSuite});

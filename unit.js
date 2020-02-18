@@ -1,19 +1,19 @@
 // This file is part of the gjsunit framework
 // Please visit https://github.com/philipphoffmann/gjsunit for more information
 
-imports.searchPath.push('.');
-imports.searchPath.push('/usr/share/gnome-js');
-imports.searchPath.push('/usr/share/gnome-shell/js');
+// imports.searchPath.push('.');
+// imports.searchPath.push('/usr/share/gnome-js');
+// imports.searchPath.push('/usr/share/gnome-shell/js');
 
 var countTestsOverall = 0;
 var countTestsFailed = 0;
 
-window.describe = function(moduleName, callback) {
+const describe = function(moduleName, callback) {
 	print('\n' + moduleName);
 	callback();
 };
 
-window.it = function(expectation, callback) {
+const it = function(expectation, callback) {
 	try {
 		callback();
 		print('  \x1B[32m✔\x1B[39m \x1B[90m' + expectation + '\x1B[39m');
@@ -24,7 +24,7 @@ window.it = function(expectation, callback) {
 	}
 }
 
-window.expect = function(actualValue) {
+const expect = function(actualValue) {
 
 	function MatcherFactory(actualValue, positive) {
 		function triggerResult(success, msg) {
@@ -133,7 +133,7 @@ window.expect = function(actualValue) {
 	return expecter;
 }
 
-var runTests = function(namespace) {
+const runTests = function(namespace) {
 	// recursively check the test directory for executable tests
 	for( var subNamespace in namespace ) {
 
@@ -148,30 +148,26 @@ var runTests = function(namespace) {
 	}
 }
 
-// by default we run tests from the 'test' directory
-var testDir = 'test';
-var knownDirs = [];
-
-// scan all modules we can import
-for( var dir in imports ) {
-	knownDirs.push(dir);
+const printResult = () => {
+	if( countTestsFailed ) {
+		// some tests failed
+		print('\n\x1B[31m❌ ' + countTestsFailed + ' of ' + countTestsOverall + ' tests failed\x1B[39m');
+	}
+	else {
+		// all tests okay
+		print('\n\x1B[32m✔ ' + countTestsOverall + ' completed\x1B[39m');
+	}
 }
 
-// if the provided argument is amongst the known modules, use that module as the test root
-if( ARGV[0] && knownDirs.indexOf(ARGV[0]) !== -1 ) {
-	testDir = ARGV[0];
+const run  = function(namespace) {
+	runTests(namespace)
+	printResult();
+	print();	
 }
 
-// run tests from the test root
-runTests(imports[testDir]);
-
-if( countTestsFailed ) {
-	// some tests failed
-	print('\n\x1B[31m❌ ' + countTestsFailed + ' of ' + countTestsOverall + ' tests failed\x1B[39m');
+module.exports = {
+	describe,
+	it,
+	expect,
+	run,
 }
-else {
-	// all tests okay
-	print('\n\x1B[32m✔ ' + countTestsOverall + ' completed\x1B[39m');
-}
-
-print();

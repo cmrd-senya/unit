@@ -1,0 +1,32 @@
+{
+  "name": "@gjsify/unit",
+  "version": "0.0.1",
+  "description": "A BDD-style testing framework for the gjs Gnome Javascript binding.",
+  "main": "unit.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run build:test && gjs test/bundle.js",
+    "build:test": "browserify test/unit.js -o test/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjsify/unit.git"
+  },
+  "keywords": [
+    "gjs",
+    "test",
+    "tdd",
+    "bdd"
+  ],
+  "author": "Philipp Hoffmann <mail@philipphoffmann.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gjsify/unit/issues"
+  },
+  "homepage": "https://github.com/gjsify/unit#readme",
+  "devDependencies": {
+    "browserify": "^16.5.0"
+  }
+}
